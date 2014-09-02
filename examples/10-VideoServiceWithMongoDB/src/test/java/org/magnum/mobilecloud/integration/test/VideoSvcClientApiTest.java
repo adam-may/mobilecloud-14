@@ -12,7 +12,6 @@ import org.magnum.mobilecloud.video.repository.Video;
 
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
-import retrofit.client.ApacheClient;
 
 /**
  * 
@@ -37,10 +36,9 @@ import retrofit.client.ApacheClient;
  */
 public class VideoSvcClientApiTest {
 
-	private final String TEST_URL = "https://localhost:8443";
+	private final String TEST_URL = "http://localhost:8080";
 
 	private VideoSvcApi videoService = new RestAdapter.Builder()
-			.setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
 			.setEndpoint(TEST_URL).setLogLevel(LogLevel.FULL).build()
 			.create(VideoSvcApi.class);
 

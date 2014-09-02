@@ -1,18 +1,17 @@
 package org.magnum.mobilecloud.integration.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.magnum.mobilecloud.video.TestData;
 import org.magnum.mobilecloud.video.client.VideoSvcApi;
 import org.magnum.mobilecloud.video.repository.Video;
 
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
-import retrofit.client.ApacheClient;
 
 /**
  * 
@@ -37,10 +36,9 @@ import retrofit.client.ApacheClient;
  */
 public class VideoSvcClientApiTest {
 
-	private final String TEST_URL = "https://localhost:8443";
+	private final String TEST_URL = "http://localhost:8080";
 
 	private VideoSvcApi videoService = new RestAdapter.Builder()
-			.setClient(new ApacheClient(UnsafeHttpsClient.createUnsafeClient()))
 			.setEndpoint(TEST_URL).setLogLevel(LogLevel.FULL).build()
 			.create(VideoSvcApi.class);
 
@@ -57,8 +55,9 @@ public class VideoSvcClientApiTest {
 	public void testVideoAddAndList() throws Exception {
 		
 		// Add the video
-		videoService.addVideo(video);
-		
+		boolean ok = videoService.addVideo(video);
+		assertTrue(ok);
+
 		// We should get back the video that we added above
 		Collection<Video> videos = videoService.getVideoList();
 		assertTrue(videos.contains(video));
