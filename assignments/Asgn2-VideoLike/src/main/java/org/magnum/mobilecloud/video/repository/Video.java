@@ -1,5 +1,15 @@
 package org.magnum.mobilecloud.video.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Basic;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.google.common.base.Objects;
 
 /**
@@ -16,14 +26,23 @@ import com.google.common.base.Objects;
  * 
  * @author mitchell
  */
+@Entity
 public class Video {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
+	@Basic
 	private String name;
+	@Basic
 	private String url;
+	@Basic
 	private long duration;
+	@Basic
 	private long likes;
+	@ElementCollection
+	private List<String> usersWhoLiked;
 	
 	public Video() {
 	}
@@ -34,6 +53,7 @@ public class Video {
 		this.url = url;
 		this.duration = duration;
 		this.likes = likes;
+		this.usersWhoLiked = new ArrayList<String>();
 	}
 
 	public String getName() {
@@ -74,6 +94,23 @@ public class Video {
 	
 	public void setLikes(long likes) {
 		this.likes = likes;
+	}
+	
+	public boolean like(String user) {
+		if (usersWhoLiked.contains(user))
+			return false;
+		usersWhoLiked.add(user);
+		likes++;
+		return true;
+	}
+	
+	public void unlike(String user) {
+		if (usersWhoLiked.remove(user))
+			likes--;
+	}
+	
+	public List<String> getUsersWhoLiked() {
+		return usersWhoLiked;
 	}
 	
 	/**
